@@ -1,0 +1,18 @@
+{
+    "mac_unroll": {
+        "oc": 4,
+        "w": 4,
+        "h": 32
+    },
+    "a_buf": {
+        "lower_limit": 0.5,
+        "size_step": 0.5,
+        "size_points": 10
+    },
+    "w_buf": {
+        "size": 4     
+    },
+    "dram": {
+        "bandwidth": 8
+    }
+}

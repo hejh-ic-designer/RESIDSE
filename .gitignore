@@ -1,0 +1,80 @@
+# 忽略所有 .pyc 文件
+*.pyc
+
+# 忽略所有 __pycache__ 目录
+__pycache__/
+
+# 忽略虚拟环境
+venv/
+.env/
+.virtualenv/
+.venv/
+
+# 忽略 IDE 和编辑器生成的文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
+*.tmp
+
+# 忽略 Jupyter Notebook 检查点文件
+.ipynb_checkpoints/
+
+# 忽略测试覆盖率文件
+coverage.xml
+.coverage
+.htmlcov/
+
+# 忽略 Django 项目相关的文件
+db.sqlite3
+*.log
+media/
+
+# 忽略 Flask 项目相关的文件
+instance/
+
+# 忽略 PyCharm 生成的文件
+.pydevproject
+.project
+.settings/
+workspace.xml
+tasks.json
+launch.json
+extensions.json
+
+# 忽略 Docker 相关文件
+docker-compose.override.yml
+.dockerignore
+Dockerfile.dev
+
+# 忽略 macOS 和 Linux 系统生成的文件
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 忽略特定配置文件
+config.py
+settings.py
+secrets.py
+credentials.py
+
+# 忽略日志文件
+*.log
+logs/
+log/
+
+# 忽略构建和分发文件
+dist/
+build/
+*.egg-info/
+MANIFEST
+
+# 忽略依赖管理工具生成的文件
+Pipfile.lock
+poetry.lock
+requirements.txt
+pip-log.txt
+pip-delete-this-directory.txt

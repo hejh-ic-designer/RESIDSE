@@ -1,0 +1,149 @@
+# conv 1
+1 : 
+  op : conv
+  stride : 2
+  in_resb : false
+  dim : [112, 112, 64, 3, 7, 7]  # h, w, oc, ic, fx, fy
+
+# conv 2_x
+2 : 
+  op : pool
+  stride : 2
+  in_resb : false
+  dim : [56, 56, 64, 64, 3, 3]  # h, w, oc, ic, fx, fy
+
+---
+
+3 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [56, 56, 64, 64, 3, 3]
+
+4 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [56, 56, 64, 64, 3, 3]
+
+---
+
+5 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [56, 56, 64, 64, 3, 3]
+
+6 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [56, 56, 64, 64, 3, 3]
+
+---
+
+# conv 3_x
+7 : 
+  op : conv
+  stride : 2
+  in_resb : true
+  dim : [28, 28, 128, 64, 3, 3]
+
+8 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [28, 28, 128, 128, 3, 3]
+
+---
+
+9 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [28, 28, 128, 128, 3, 3]
+
+10 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [28, 28, 128, 128, 3, 3]
+
+---
+
+# conv 4_x
+11 : 
+  op : conv
+  stride : 2
+  in_resb : true
+  dim : [14, 14, 256, 128, 3, 3]
+
+12 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [14, 14, 256, 256, 3, 3]
+
+---
+
+13 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [14, 14, 256, 256, 3, 3]
+
+14 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [14, 14, 256, 256, 3, 3]
+
+---
+
+# conv 5_x
+15 : 
+  op : conv
+  stride : 2
+  in_resb : true
+  dim : [7, 7, 512, 512, 3, 3]
+
+16 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [7, 7, 512, 512, 3, 3]
+
+---
+
+17 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [7, 7, 512, 512, 3, 3]
+
+18 : 
+  op : conv
+  stride : 1
+  in_resb : true
+  dim : [7, 7, 512, 512, 3, 3]
+
+# avg_pool
+19 : 
+  op : pool
+  stride : 1
+  in_resb : false
+  dim : [1, 1, 512, 512, 7, 7]
+
+---
+
+# fc
+20 :
+  op : fc
+  stride : 1
+  in_resb : false
+  dim : [1, 1, 1000, 512, 1, 1]
+
+
+
+# 1. 检查上一层的输入和下一层输出是否匹配
+# 2. 检查 add 的degree
