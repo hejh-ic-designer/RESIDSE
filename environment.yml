@@ -1,0 +1,9 @@
+name: RESIenv
+channels:
+  - defaults
+dependencies:
+  - python>=3.10
+  - sympy
+  - matplotlib
+  - yaml
+  - pickle
