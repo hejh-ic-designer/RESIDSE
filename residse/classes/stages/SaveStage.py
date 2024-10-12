@@ -24,7 +24,7 @@ class CompleteSaveStage(Stage):
         self.dump_filename_pattern = dump_filename_pattern
 
 
-    def run(self) -> Generator[Tuple[CostModelEvaluation, Any], None, None]:
+    def run(self):
         """
         Run the complete save stage by running the substage and saving the CostModelEvaluation json representation.
         """
@@ -33,9 +33,16 @@ class CompleteSaveStage(Stage):
 
         for cme, extra_info in substage.run():
             cme: CostModelEvaluation
-            filename = self.dump_filename_pattern.replace("?", f"abuf_{cme.a_buf_size/1024}")
+            a_buf_size = extra_info[1]  # take a_buf_size from extra_info of next stage
+            filename = self.dump_filename_pattern.replace("?", f"abuf_{a_buf_size}")
+            # filename = self.dump_filename_pattern.replace("?", f"abuf_{cme.a_buf_size/1024}")
             self.save_to_json(cme, filename=filename)
-            logger.info(f"Saved {cme} with energy {cme.en}, latency {cme.la} and edp {cme.edp} to {filename}")
+            
+            # print log
+            if cme is None:
+                logger.info(f"skip a buf size at {a_buf_size}")
+            else:
+                logger.info(f"Saved cme with energy {cme.en}, latency {cme.la} and edp {cme.edp} to {filename}")
             yield cme, extra_info
 
 
@@ -49,6 +56,8 @@ class CompleteSaveStage(Stage):
     def complexHandler(obj):
         if hasattr(obj, "__jsonrepr__"):
             return obj.__jsonrepr__()
+        elif obj is None:
+            return {"EDP": 0}
         else:
             raise TypeError(f"Object of type {type(obj)} is not serializable. Create a __jsonrepr__ method.")
 
@@ -70,7 +79,7 @@ class SimpleSaveStage(Stage):
         super().__init__(list_of_callables, **kwargs)
         self.dump_filename_pattern = dump_filename_pattern
 
-    def run(self) -> Generator[Tuple[CostModelEvaluation, Any], None, None]:
+    def run(self):
         """
         Run the simple save stage by running the substage and saving the CostModelEvaluation simple json representation.
         """
@@ -120,7 +129,7 @@ class PickleSaveStage(Stage):
         super().__init__(list_of_callables, **kwargs)
         self.pickle_filename = pickle_filename
 
-    def run(self) -> Generator[Tuple[CostModelEvaluation, Any], None, None]:
+    def run(self):
         """
         Run the simple save stage by running the substage and saving the CostModelEvaluation simple json representation.
         This should be placed above a ReduceStage such as the SumStage, as we assume the list of CMEs is passed as extra_info

@@ -10,21 +10,23 @@ class TileSizeGenerator:
         self.fixed_tile_size = fixed_tile_size
         self.ofm_h = stack.ofm_h
         self.ofm_w = stack.ofm_w
-        self.h_points = nb_of_points[0] if nb_of_points is not None else 5
-        self.w_points = nb_of_points[1] if nb_of_points is not None else 5
+        self.h_points = nb_of_points[0] if nb_of_points is not None else 10  #* default tile size profiling points
+        self.w_points = nb_of_points[1] if nb_of_points is not None else 10  #* default tile size profiling points
 
 
     def run(self):
         if self.fixed_tile_size is not None:
-            return self.fixed_tile_size
+            size_gen_lst = [self.fixed_tile_size]
+        else:
+            t_h_lst = self.generate_halves(self.ofm_h, self.h_points)   #todo 采用了比较简单的除以2算法
+            t_w_lst = self.generate_halves(self.ofm_w, self.w_points)   #todo 采用了比较简单的除以2算法
+            t_h_lst = list(filter(lambda x: x != 0, t_h_lst))   # remove 0
+            t_w_lst = list(filter(lambda x: x != 0, t_w_lst))   # remove 0
+            logger.debug(f'tile size profiling list: h in {t_h_lst}, w in {t_w_lst}')
+            size_gen_lst = list(product(t_h_lst, t_w_lst))
+        self.size_gen_lst = size_gen_lst
         
-        t_h_lst = self.generate_halves(self.ofm_h, self.h_points)   #todo 采用了比较简单的除以2算法
-        t_w_lst = self.generate_halves(self.ofm_w, self.w_points)   #todo 采用了比较简单的除以2算法
-        t_h_lst = list(filter(lambda x: x != 0, t_h_lst))   # remove 0
-        t_w_lst = list(filter(lambda x: x != 0, t_w_lst))   # remove 0
-        logger.debug(f'tile size list: h in {t_h_lst}, w in {t_w_lst}')
-
-        for tile_size in list(product(t_h_lst, t_w_lst)):
+        for tile_size in self.size_gen_lst:
             yield tile_size
 
 

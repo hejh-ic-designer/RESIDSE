@@ -17,7 +17,7 @@ class IterateStackStage(Stage):
             kwargs = self.kwargs.copy()
             kwargs['stack'] = stack
             sub_stage = self.list_of_callables[0](self.list_of_callables[1:], **kwargs)
-            logger.info(f'Running stack of {stack} ...')
+            logger.debug(f'Running stack of {stack} ...')
             for cme, extra_info in sub_stage.run():
                 yield cme, extra_info
 

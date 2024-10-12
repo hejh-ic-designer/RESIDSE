@@ -60,6 +60,17 @@ def find_lzc(lst):
     except StopIteration:
         return None
 
+def sum_cme(lst_of_cme: list['CostModelEvaluation']):
+    summation = None
+    for cme in lst_of_cme:
+        if cme is None:
+            return None
+        if summation is None:
+            summation = cme
+        else:
+            summation += cme
+    return summation
+
 
 if __name__ == '__main__':
     a = 10

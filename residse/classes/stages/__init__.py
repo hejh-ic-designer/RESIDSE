@@ -5,7 +5,8 @@ from .ResidseCostModelStage import ResidseCostModelStage
 from .SaveStage import CompleteSaveStage, SimpleSaveStage
 from .IterateMemSIzeStage import IterateMemSizeStage
 from .IterateStackStage import IterateStackStage
-from .ReduceStage import MinimalEDPStage, MinimalEnergyStage, MinimalLatencyStage
+from .ReduceStage import MinimalEDPStage, MinimalEnergyStage, MinimalLatencyStage, MinimalEMAStage
 from .IterateTileSizeStage import IterateTileSizeStage
 from .SumAllTileTypeStage import SumAllTileTypeStage
+from .PlotStage import PlotStage
 

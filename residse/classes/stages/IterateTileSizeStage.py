@@ -24,17 +24,5 @@ class IterateTileSizeStage(Stage):
             kwargs['stack'] = self.stack
             sub_stage = self.list_of_callables[0](self.list_of_callables[1:], **kwargs)
             for cme, extra_info in sub_stage.run():
-                # todo, 如果当前tile size使得 edp=0，即a buf不支持LF，则当前tile size 需要跳过
                 yield cme, (tile_size, extra_info)
 
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
