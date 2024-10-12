@@ -14,8 +14,8 @@ parser = argparse.ArgumentParser(description="Setup residse inputs")
 parser.add_argument( "--nn", metavar="Network name", required=True, help="module name to networks, e.g. resnet18")
 parser.add_argument( "--hw", metavar="Hardware name", required=True, help="file name to the user-defined json accelerator, e.g. example_1")
 parser.add_argument( "--merge", action='store_true', help="bool, using feature merging stategy?")
-parser.add_argument( "--tile_size", metavar="Fixed Tile Size", type=int, nargs='+', required=False, help="use fixed tile size [h, w], e.g. [4, 6]" )
-parser.add_argument( "--tile_points", metavar="Tile Size Points", required=False, help="tile size points to explore, e.g. [10, 10] will run 100 points" )
+parser.add_argument( "--tile_size", metavar="Fixed Tile Size", type=int, nargs='+', required=False, help="use fixed tile size [h, w], e.g. 4 6" )
+parser.add_argument( "--tile_points", metavar="Tile Size Points", type=int, nargs='+', required=False, help="tile size points to explore, e.g. 10 10 will run 100 points" )
 args = parser.parse_args()
 
 # set experiment id
