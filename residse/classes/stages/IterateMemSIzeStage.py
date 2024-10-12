@@ -23,11 +23,13 @@ class IterateMemSizeStage(Stage):
             kwargs['a_buf_size'] = a_buf_size
             kwargs['dla'] = self.dla
             sub_stage = self.list_of_callables[0](self.list_of_callables[1:], **kwargs)
-            logger.info(f'Start running a_buf size at {a_buf_size} '+'-----'*30)
+            logger.info(f'Start running a_buf size at {a_buf_size} '+'---'*30)
             for cme, extra_info in sub_stage.run():
                 self.cme_of_stacks.append(cme)
 
             # any stack is not-able to Layer Fusion --> sum_cme = None
             self.sum_cme = sum_cme(self.cme_of_stacks)   
+            if self.sum_cme is None:
+                logger.info(f"skip a buf size at {a_buf_size}")
             yield self.sum_cme, (self.cme_of_stacks, a_buf_size, extra_info)
 

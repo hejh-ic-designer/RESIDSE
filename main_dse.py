@@ -29,7 +29,7 @@ else:
 StagesPipeline = [
     HardwareParserStage,
     WorkloadParserStage,
-    CompleteSaveStage,
+    PickleSaveStage,
     PlotStage,
     IterateMemSizeStage,
     IterateStackStage,

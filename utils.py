@@ -72,6 +72,10 @@ def sum_cme(lst_of_cme: list['CostModelEvaluation']):
     return summation
 
 
+def clear_none_in_lst(lst: list):
+    return [x for x in lst if x is not None]
+
+
 if __name__ == '__main__':
     a = 10
     p = [1, 2, 2]

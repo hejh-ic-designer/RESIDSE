@@ -1,5 +1,7 @@
+import pickle
 import matplotlib.pyplot as plt
 from matplotlib.colors import hsv_to_rgb
+from utils import clear_none_in_lst
 import numpy as np
 from residse.classes.cost_model.cost_model import CostModelEvaluation
 
@@ -7,8 +9,8 @@ from residse.classes.cost_model.cost_model import CostModelEvaluation
 def plot_cme_edp(cmes: list[CostModelEvaluation], save_path = 'edp.png'):
     plt.figure(dpi=1000)
 
-    x = [cme.a_buf_size/1024 for cme in cmes if cme is not None]
-    y = [cme.edp for cme in cmes if cme is not None]
+    x = [cme.a_buf_size/1024 for cme in clear_none_in_lst(cmes)]
+    y = [cme.edp for cme in clear_none_in_lst(cmes)]
 
     # 创建散点图
     plt.scatter(x, y, color='blue', marker='o')  # 'o'代表圆圈，color设置点的颜色
@@ -23,15 +25,71 @@ def plot_cme_edp(cmes: list[CostModelEvaluation], save_path = 'edp.png'):
 def plot_cme_ema(cmes: list[CostModelEvaluation], save_path = 'ema.png'):
     plt.figure(dpi=1000)
 
-    x = [cme.a_buf_size/1024 for cme in cmes if cme is not None]
-    y = [cme.ema for cme in cmes if cme is not None]
+    x = [cme.a_buf_size/1024 for cme in clear_none_in_lst(cmes)]
+    y = [cme.ema for cme in clear_none_in_lst(cmes)]
 
     # 创建散点图
     plt.scatter(x, y, color='blue', marker='o')  # 'o'代表圆圈，color设置点的颜色
+
+    plt.title('EMA -- buffer size')
+    plt.xlabel('activation buffer size (KB)')
+    plt.ylabel('EMA')
+    plt.savefig(save_path, dpi=1000)
+
+
+def plot_two_lines_ema(pkl_paths: list[str], save_path: str):
+    plt.figure(dpi=1000)
+    with open(pkl_paths[0], "rb") as handle:
+        list_of_cme_0 = pickle.load(handle)
+    with open(pkl_paths[1], "rb") as handle:
+        list_of_cme_1 = pickle.load(handle)
+    label0 = 'merge' if 'True' in pkl_paths[0] else 'not-merge'
+    label1 = 'merge' if 'True' in pkl_paths[1] else 'not-merge'
+    assert label1 != label0, 'pkl path error !!!'
+
+
+    # line 0
+    x0 = [cme.a_buf_size/1024 for cme in clear_none_in_lst(list_of_cme_0)]
+    y0 = [cme.ema for cme in clear_none_in_lst(list_of_cme_0)]
+    plt.scatter(x0, y0, color='blue', marker='o', label=label0)   # 'o'代表圆圈，color设置点的颜色
+    
+    # line 1
+    x1 = [cme.a_buf_size/1024 for cme in clear_none_in_lst(list_of_cme_1)]
+    y1 = [cme.ema for cme in clear_none_in_lst(list_of_cme_1)]
+    plt.scatter(x1, y1, color='red', marker='o', label=label1)   # 'o'代表圆圈，color设置点的颜色
 
 
     plt.title('EMA -- buffer size')
     plt.xlabel('activation buffer size (KB)')
     plt.ylabel('EMA')
+    plt.legend(loc='upper right')
+    plt.savefig(save_path, dpi=1000)
+
+
+def plot_two_lines_edp(pkl_paths: list[str], save_path: str):
+    plt.figure(dpi=1000)
+    with open(pkl_paths[0], "rb") as handle:
+        list_of_cme_0 = pickle.load(handle)
+    with open(pkl_paths[1], "rb") as handle:
+        list_of_cme_1 = pickle.load(handle)
+    label0 = 'merge' if 'True' in pkl_paths[0] else 'not-merge'
+    label1 = 'merge' if 'True' in pkl_paths[1] else 'not-merge'
+    assert label1 != label0, 'pkl path error !!!'
+
+    # line 0
+    x0 = [cme.a_buf_size/1024 for cme in clear_none_in_lst(list_of_cme_0)]
+    y0 = [cme.edp for cme in clear_none_in_lst(list_of_cme_0)]
+    plt.scatter(x0, y0, color='blue', marker='o', label=label0)   # 'o'代表圆圈，color设置点的颜色
+    
+    # line 1
+    x1 = [cme.a_buf_size/1024 for cme in clear_none_in_lst(list_of_cme_1)]
+    y1 = [cme.edp for cme in clear_none_in_lst(list_of_cme_1)]
+    plt.scatter(x1, y1, color='red', marker='o', label=label1)   # 'o'代表圆圈，color设置点的颜色
+
+
+    plt.title('EDP -- buffer size')
+    plt.xlabel('activation buffer size (KB)')
+    plt.ylabel('EDP')
+    plt.legend(loc='upper right')
     plt.savefig(save_path, dpi=1000)
 
