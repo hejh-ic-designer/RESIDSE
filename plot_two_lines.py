@@ -2,7 +2,8 @@ from residse.visualization.plot_cme import plot_two_lines_ema, plot_two_lines_ed
 
 def plot_2_merge():
     #= set experiment_id
-    experiment_id = 'sesr_1--sesr--True--fix_tsize32x32'
+    experiment_id = 'res18_1--resnet18--True--fix_tsize4x4'
+    # experiment_id = 'sesr_1--sesr--True--fix_tsize32x32'
     # experiment_id = 'sesr_1--sesr--True'
     # experiment_id = 'srgan_1--srgan--True--fix_tsize32x32'
 
@@ -21,11 +22,12 @@ def plot_2_merge():
 
 def plot_2_tsize():
     #= set experiment_id
-    experiment_id = 'sesr_1--sesr--True--fix_tsize32x32'
+    experiment_id = 'res18_1--resnet18--True--fix_tsize4x4'
+    # experiment_id = 'sesr_1--sesr--True--fix_tsize32x32'
     # experiment_id = 'srgan_1--srgan--True--fix_tsize32x32'
 
     # extract path
-    other_experiment_id = experiment_id.replace("--fix_tsize32x32", "")
+    other_experiment_id = experiment_id.replace("--fix_tsize4x4", "")   #! 注意在这里改 nxn
     pkl_path_1 = f'outputs/{experiment_id}/all_cmes.pickle'
     pkl_path_2 = f'outputs/{other_experiment_id}/all_cmes.pickle'
     save_path_ema = f'outputs/{experiment_id}/two_lines_tsize_ema.png'
@@ -41,3 +43,4 @@ def plot_2_tsize():
 
 if __name__ == '__main__':
     plot_2_tsize()
+    plot_2_merge()
