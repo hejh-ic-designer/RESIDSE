@@ -1,6 +1,9 @@
 from residse.visualization.plot_cme import plot_two_lines_ema, plot_two_lines_edp, plot_two_lines_tsize_edp, plot_two_lines_tsize_ema
 
 def plot_2_merge():
+    """
+    feature merging VS. non-feature merging
+    """
     #= set experiment_id
     experiment_id = 'res18_1--resnet18--True--fix_tsize4x4'
     # experiment_id = 'sesr_1--sesr--True--fix_tsize32x32'
@@ -21,6 +24,9 @@ def plot_2_merge():
 
 
 def plot_2_tsize():
+    """
+    fixed tile size VS. free tile size
+    """
     #= set experiment_id
     experiment_id = 'res18_1--resnet18--True--fix_tsize4x4'
     # experiment_id = 'sesr_1--sesr--True--fix_tsize32x32'

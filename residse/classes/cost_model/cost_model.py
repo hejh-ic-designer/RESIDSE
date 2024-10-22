@@ -25,7 +25,7 @@ class CostModelEvaluation:
         self.dla = dla
         self.stack = stack
         self.tile_type = tile_type
-        self.tile_size = tile_size
+        self.tile_size = tile_size  #? re-calculating tile size according tile_type?
         self.tile_h = tile_size[0]
         self.tile_w = tile_size[1]
         self.is_feature_merging = is_feature_merging
@@ -35,11 +35,15 @@ class CostModelEvaluation:
 
 
     def calc_data_amount(self):
+        """
+        calculate every data amount
+        """
         self.calc_lower_limit_of_abuf_for_stack()
         self.calc_next_tile_data_amount()
         self.calc_olp_data_amount()
 
-        if self.first_true_id is None:
+        if self.first_true_id is None:  
+            # this isn't a residual block
             self.residual_tile_data_amount = 0
             self.x_merging_data_amount = 0
             self.y_merging_data_amount = 0
@@ -52,7 +56,7 @@ class CostModelEvaluation:
     def calc_edp(self):
         self.calc_ema()
         if self.stack.has_outer_add():
-            self.ema += self.stack.ofm_w * self.stack.ofm_h * self.stack.och_per_layer[-1]  # 粗略的加上 outer add 大残差数据量
+            self.ema += self.stack.ofm_w * self.stack.ofm_h * self.stack.och_per_layer[-1]  # outer_add is big residual feature map
         self.calc_en()
         self.calc_la()
         self.edp = self.en * self.la
@@ -88,6 +92,9 @@ class CostModelEvaluation:
 
 
     def number_of_tile(self):
+        """
+        calc numbers of current tile according tile_type
+        """
         if self.tile_type in ['LU', 'U', 'RU', 'L', 'M', 'R', 'LD', 'D', 'RD']:
             number_of_tile_in_row = floor(self.stack.ofm_w / self.tile_w + 1)
             number_of_tile_in_col = floor(self.stack.ofm_h / self.tile_h + 1)
@@ -185,12 +192,11 @@ class CostModelEvaluation:
         if lzc is None:
             ''' the a_buf is big enough to store all data on chip '''
             ema = self.lower_limit_of_abuf_for_stack
-            # ema = self.stack.get_ema_of_all_fused()
         elif lzc == 0:
             ''' the a_buf size is too small to process layer fusion '''
             ema = None
         else :
-            part_of_data_block = self.data_increase_line[lzc] - self.a_buf_size     # todo
+            part_of_data_block = self.data_increase_line[lzc] - self.a_buf_size
             x_olp_ratio = self.x_olp_ema_ratio(ttype=self.tile_type)
             y_olp_ratio = self.y_olp_ema_ratio(ttype=self.tile_type)
             residual_ratio = 1 if self.first_true_id == 0 else 2
@@ -242,6 +248,7 @@ class CostModelEvaluation:
 
 
     def multiply_tmp_unroll(self, i) -> int:
+        ''' i is layer_id in current stack '''
         tmp_unroll  = ceil(self.out_tile_h_lst[i] / self.dla.u_h) \
                     * ceil(self.out_tile_w_lst[i] / self.dla.u_w) \
                     * ceil(self.stack.och_per_layer[i] / self.dla.u_oc) \
@@ -252,8 +259,8 @@ class CostModelEvaluation:
 
 
     def calc_en(self):
-        e_mac = 0.05     # pJ ?
-        e_ema = 500     # pJ ?
+        e_mac = 0.05    # pJ ?  energy unit of single mac
+        e_ema = 500     # pJ ?  energy unit of single ema
         self.tmp_unroll_of_stack = sum([self.multiply_tmp_unroll(i) for i in range(self.stack.stack_len)])
         if self.ema is not None:
             en_of_macs = self.tmp_unroll_of_stack * self.dla.number_of_mac * e_mac
@@ -283,8 +290,8 @@ class CostModelEvaluation:
             self.ema *= self.tile_number_of_current_type
         self.en  *= self.tile_number_of_current_type
         self.la  *= self.tile_number_of_current_type
-        self.edp = self.en * self.la
-        
+        self.edp = self.en * self.la    # recalculating edp, edp cannot times number_of_type
+
 
     def __str__(self):
         return f"cme(stack={self.stack}, tsize={self.tile_size}, ttype={self.tile_type}, edp={self.edp}, en={self.en}, la={self.la}, ema={self.ema})"

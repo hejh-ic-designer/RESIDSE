@@ -38,6 +38,10 @@ def plot_cme_ema(cmes: list[CostModelEvaluation], save_path = 'default_ema.png')
 
 
 def plot_two_lines_ema(pkl_paths: list[str], save_path: str):
+    """
+    The EMA of:
+    feature merging VS. non-feature merging
+    """
     plt.figure(dpi=1000)
     with open(pkl_paths[0], "rb") as handle:
         list_of_cme_0 = pickle.load(handle)
@@ -69,6 +73,10 @@ def plot_two_lines_ema(pkl_paths: list[str], save_path: str):
 
 
 def plot_two_lines_edp(pkl_paths: list[str], save_path: str):
+    """
+    The EDP of:
+    feature merging VS. non-feature merging
+    """
     plt.figure(dpi=1000)
     with open(pkl_paths[0], "rb") as handle:
         list_of_cme_0 = pickle.load(handle)
@@ -99,6 +107,10 @@ def plot_two_lines_edp(pkl_paths: list[str], save_path: str):
 
 
 def plot_two_lines_tsize_edp(pkl_paths: list[str], save_path: str):
+    """
+    The EDP of:
+    fixed tile size VS. free tile size
+    """
     plt.figure(dpi=1000)
     with open(pkl_paths[0], "rb") as handle:
         list_of_cme_0 = pickle.load(handle)
@@ -129,6 +141,10 @@ def plot_two_lines_tsize_edp(pkl_paths: list[str], save_path: str):
 
 
 def plot_two_lines_tsize_ema(pkl_paths: list[str], save_path: str):
+    """
+    The EMA of:
+    fixed tile size VS. free tile size
+    """
     plt.figure(dpi=1000)
     with open(pkl_paths[0], "rb") as handle:
         list_of_cme_0 = pickle.load(handle)
