@@ -27,16 +27,16 @@ else:
 
 # set stage pipeline
 StagesPipeline = [
-    HardwareParserStage,
-    WorkloadParserStage,
-    PickleSaveStage,
-    PlotStage,
-    IterateMemSizeStage,
-    IterateStackStage,
-    MinimalEDPStage,
-    IterateTileSizeStage,
-    SumAllTileTypeStage,
-    ResidseCostModelStage,
+    HardwareParserStage,    # 解析硬件
+    WorkloadParserStage,    # 解析网络模型
+    PickleSaveStage,        # 保存评估结果到pickle文件
+    PlotStage,              # 绘图
+    IterateMemSizeStage,    # 迭代 mem size
+    IterateStackStage,      # 迭代各个 stack
+    MinimalEDPStage,        # 针对不同tile size, 筛选最小 EDP 设计点
+    IterateTileSizeStage,   # 迭代tile size设计点
+    SumAllTileTypeStage,    # 累加一个stack中所有layer所有tile type的评估结果
+    ResidseCostModelStage,  # 固定mem size, stack, tile size, tile type，评估其EDP
 ]
 mainstage = MainStage(
     list_of_callables=StagesPipeline,
