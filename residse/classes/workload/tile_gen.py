@@ -18,8 +18,10 @@ class TileSizeGenerator:
         if self.fixed_tile_size is not None:
             size_gen_lst = [self.fixed_tile_size]
         else:
-            t_h_lst = self.generate_halves(self.ofm_h, self.h_points)   #todo 采用了比较简单的除以2算法
-            t_w_lst = self.generate_halves(self.ofm_w, self.w_points)   #todo 采用了比较简单的除以2算法
+            t_h_lst = self.generate_even_sequence(self.ofm_h)       # 偶数序列，产生的点会很多
+            t_w_lst = self.generate_even_sequence(self.ofm_w)       # 偶数序列，产生的点会很多
+            # t_h_lst = self.generate_halves(self.ofm_h, self.h_points)   #todo 采用了比较简单的除以2算法
+            # t_w_lst = self.generate_halves(self.ofm_w, self.w_points)   #todo 采用了比较简单的除以2算法
             t_h_lst = list(filter(lambda x: x != 0, t_h_lst))   # remove 0
             t_w_lst = list(filter(lambda x: x != 0, t_w_lst))   # remove 0
             logger.debug(f'tile size profiling list: h in {t_h_lst}, w in {t_w_lst}')
@@ -34,6 +36,14 @@ class TileSizeGenerator:
     def generate_halves(number, n):
         return [int(number / (2 ** i)) for i in range(n)]
     
+    @staticmethod
+    def generate_even_sequence(max_num):
+        # 确保给定数字是正数且至少为2，因为小于2没有偶数
+        if max_num < 2:
+            return [1,]
+        # 使用列表推导式生成偶数序列
+        even_numbers = [i for i in range(2, max_num + 1) if i % 2 == 0]
+        return even_numbers
     
 class TileTypeGenerator:
     

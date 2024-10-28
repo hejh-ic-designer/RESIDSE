@@ -7,7 +7,7 @@
     "a_buf": {
         "lower_limit": 100,
         "size_step": 2,
-        "size_points": 100
+        "size_points": 125
     },
     "w_buf": {
         "size": 4     
