@@ -1,120 +1,120 @@
 1 : 
   op : conv
   in_resb : false
-  dim : [540, 960, 64, 3, 3, 3]   # h, w, oc, ic, fx, fy
+  dim : [270, 480, 64, 3, 3, 3]   # h, w, oc, ic, fx, fy
 
 ---
 
 2 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 3 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 ---
 
 4 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 5 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 ---
 
 6 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 7 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 ---
 
 64 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 9 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 ---
 
 10 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 11 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 ---
 
 12 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 13 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 ---
 
 14 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 15 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 ---
 
 16 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 17 :
   op : conv
   in_resb : true
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 ---
 
 18 :
   op : conv
   in_resb : false
-  dim : [540, 960, 64, 64, 3, 3]
+  dim : [270, 480, 64, 64, 3, 3]
 
 19 : 
   op : outer_add    # 为了表征大残差需要从片外load数据，关注h/w/oc即可
   in_resb : false
-  dim : [540, 960, 64, 0, 0, 0]
+  dim : [270, 480, 64, 0, 0, 0]
 
 19 :
   op : conv
   in_resb : false
-  dim : [540, 960, 48, 64, 3, 3]
+  dim : [270, 480, 48, 64, 3, 3]
 
 
 
