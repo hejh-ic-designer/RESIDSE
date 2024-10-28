@@ -175,6 +175,22 @@ class CostModelEvaluation:
         self.y_olp_data_amount = sum(y_olp_data_amount)
 
 
+    def calc_y_ema_ratio_each_tile(self, part_data_amount, total_data_amount, ofm_w, ofm_h, tile_h, tile_w, n):
+        part = part_data_amount * (n+1) * tile_w / total_data_amount
+        length = (n+1) * tile_w
+        blue = length - part
+        y_num = ceil(ofm_h / tile_h) - 1
+        total_length = y_num * ofm_w
+        remain_len = total_length - floor(total_length / length) * length
+        last_red = 0 if (remain_len < blue) else (remain_len - blue)
+        total_red = part * floor(total_length / length) + last_red
+        ratio = (total_red / total_length) / (n+1)
+        if ratio > 1:
+            raise NameError
+        logger.info(f'ratio: {ratio}')
+        return ratio
+
+
     def calc_ema(self):
         self.every_data_amount = [
             self.lower_limit_of_abuf_for_stack ,
@@ -204,27 +220,29 @@ class CostModelEvaluation:
                 ''' cut at residual_tile_data_amount '''
                 ema = part_of_data_block * residual_ratio \
                     + (self.x_merging_data_amount + self.x_olp_data_amount) * x_olp_ratio \
-                    + (self.y_merging_data_amount + self.y_olp_data_amount) * y_olp_ratio \
+                    + (self.y_merging_data_amount + self.y_olp_data_amount) * y_olp_ratio / (self.number_of_tile_in_row + 1) \
                     + self.lower_limit_of_abuf_for_stack
             elif lzc == 2:
                 ''' cut at x_merging_data_amount '''
                 ema = (part_of_data_block + x_olp_ratio) * x_olp_ratio \
-                    + (self.y_merging_data_amount + self.y_olp_data_amount) * y_olp_ratio \
+                    + (self.y_merging_data_amount + self.y_olp_data_amount) * y_olp_ratio / (self.number_of_tile_in_row + 1)  \
                     + self.lower_limit_of_abuf_for_stack
             elif lzc == 3:
                 ''' cut at next_tile_data_amount '''
-                ema = self.x_olp_data_amount * x_olp_ratio + (self.y_merging_data_amount + self.y_olp_data_amount) * y_olp_ratio \
+                ema = self.x_olp_data_amount * x_olp_ratio + (self.y_merging_data_amount + self.y_olp_data_amount) * y_olp_ratio / (self.number_of_tile_in_row + 1)  \
                     + self.lower_limit_of_abuf_for_stack
             elif lzc == 4:
                 ''' cut at x_olp_data_amount '''
-                ema = part_of_data_block * x_olp_ratio + (self.y_merging_data_amount + self.y_olp_data_amount) * y_olp_ratio \
+                ema = part_of_data_block * x_olp_ratio + (self.y_merging_data_amount + self.y_olp_data_amount) * y_olp_ratio / (self.number_of_tile_in_row + 1)  \
                     + self.lower_limit_of_abuf_for_stack
             elif lzc == 5:
                 ''' cut at y_merging_data_amount '''
-                ema = (part_of_data_block + self.y_olp_data_amount) * y_olp_ratio + self.lower_limit_of_abuf_for_stack
+                y_ema_ratio_each_tile = self.calc_y_ema_ratio_each_tile(part_of_data_block, self.y_merging_data_amount, self.stack.ofm_w, self.stack.ofm_h, self.tile_h, self.tile_w, self.number_of_tile_in_row)
+                ema = (part_of_data_block + self.y_olp_data_amount) * y_olp_ratio * y_ema_ratio_each_tile  + self.lower_limit_of_abuf_for_stack
             else :
                 ''' cut at y_olp_data_amount '''
-                ema = part_of_data_block * y_olp_ratio + self.lower_limit_of_abuf_for_stack
+                y_ema_ratio_each_tile = self.calc_y_ema_ratio_each_tile(part_of_data_block, self.y_olp_data_amount, self.stack.ofm_w, self.stack.ofm_h, self.tile_h, self.tile_w, self.number_of_tile_in_row)
+                ema = part_of_data_block * y_olp_ratio * y_ema_ratio_each_tile  + self.lower_limit_of_abuf_for_stack
 
         self.ema = ema
 
@@ -368,6 +386,7 @@ class CostModelEvaluation:
             "calc_en",
             "calc_la",
             "times_tile_number",
+            "calc_y_ema_ratio_each_tile",
         ]
         add_attr = [
             "ema",
