@@ -36,6 +36,20 @@ def plot_cme_ema(cmes: list[CostModelEvaluation], save_path = 'default_ema.png')
     plt.ylabel('EMA')
     plt.savefig(save_path, dpi=1000)
 
+def plot_cme_edp_times_buf(cmes: list[CostModelEvaluation], save_path = 'default_ema.png'):
+    plt.figure(dpi=1000)
+    # todo
+    x = [cme.a_buf_size/1024 for cme in clear_none_in_lst(cmes)]
+    y = [cme.ema for cme in clear_none_in_lst(cmes)]
+
+    # 创建散点图
+    plt.scatter(x, y, color='blue', marker='o')  # 'o'代表圆圈，color设置点的颜色
+
+    plt.title('EMA -- buffer size')
+    plt.xlabel('activation buffer size (KB)')
+    plt.ylabel('EMA')
+    plt.savefig(save_path, dpi=1000)
+
 
 def plot_two_lines_ema(pkl_paths: list[str], save_path: str):
     """

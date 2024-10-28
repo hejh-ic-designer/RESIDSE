@@ -77,20 +77,21 @@ def clear_none_in_lst(lst: list):
 
 
 if __name__ == '__main__':
-    a = 10
-    p = [1, 2, 2]
+    # a = 10
+    # p = [1, 2, 2]
 
-    # 生成数列
-    sequence = generate_tile_sequence(a, p)
-    print(f"Generated sequence: {sequence}")
+    # # 生成数列
+    # sequence = generate_tile_sequence(a, p)
+    # print(f"Generated sequence: {sequence}")
     
     
-    # 示例列表
-    bool_list = [False, False, False, False, False]
+    # # 示例列表
+    # bool_list = [False, False, False, False, False]
 
-    # 找到第一个 True 的索引
-    index = find_first_true_index(bool_list)
-    print(f"The index of the first True is: {index}")
+    # # 找到第一个 True 的索引
+    # index = find_first_true_index(bool_list)
+    # print(f"The index of the first True is: {index}")
 
-    
+    lzc = find_lzc([0, 0, 0, 1])
+    print('lzc: ', lzc)
     
