@@ -98,25 +98,25 @@ def plot_two_lines_edp(pkl_paths: list[str], save_path: str):
         list_of_cme_1 = pickle.load(handle)
     
     # set label
-    label0 = 'merge' if 'True' in pkl_paths[0] else 'not-merge'
-    label1 = 'merge' if 'True' in pkl_paths[1] else 'not-merge'
+    label0 = 'With Feature Merging' if 'True' in pkl_paths[0] else 'Without Feature Merging'
+    label1 = 'With Feature Merging' if 'True' in pkl_paths[1] else 'Without Feature Merging'
     assert label1 != label0, 'pkl path error !!!'
 
     # line 0
     x0 = [cme.a_buf_size/1024 for cme in clear_none_in_lst(list_of_cme_0)]
     y0 = [cme.edp for cme in clear_none_in_lst(list_of_cme_0)]
-    plt.scatter(x0, y0, c='royalblue', marker='o', s=3, label=label0)   # 'o'代表圆圈，color设置点的颜色
+    plt.scatter(x0, y0, c='darkorange', marker='o', s=5, label=label0)   # 'o'代表圆圈，color设置点的颜色
     
     # line 1
     x1 = [cme.a_buf_size/1024 for cme in clear_none_in_lst(list_of_cme_1)]
     y1 = [cme.edp for cme in clear_none_in_lst(list_of_cme_1)]
-    plt.scatter(x1, y1, c='darkorange', marker='o', s=3, label=label1)   # 'o'代表圆圈，color设置点的颜色
+    plt.scatter(x1, y1, c='royalblue', marker='o', s=5, label=label1)   # 'o'代表圆圈，color设置点的颜色
 
 
-    plt.title('EDP -- buffer size')
-    plt.xlabel('activation buffer size (KB)')
-    plt.ylabel('EDP')
-    plt.legend(loc='upper right')
+    plt.title('ResNet18',fontsize=18)
+    plt.xlabel('On-Chip Memory Footprint for Feature (KB)',fontsize=15)
+    plt.ylabel('EDP (pJ x Cycles)',fontsize=15)
+    plt.legend(prop={'size':13},loc='upper right',markerscale=3)
     plt.savefig(save_path, dpi=1000)
 
 

@@ -25,7 +25,8 @@ for cme in cmes:
 # print(buf_times_edp)
 mini = min(buf_times_edp)
 id = buf_times_edp.index(mini)
-mini_buf_size = buf_list[id]/1024   # 固定的 buffer size
+# mini_buf_size = buf_list[id]/1024   # 固定的 buffer size
+mini_buf_size = 150   # 固定的 buffer size
 print(mini)
 print('minimal buf index is: ', id)
 print('buffer size is: ', mini_buf_size)

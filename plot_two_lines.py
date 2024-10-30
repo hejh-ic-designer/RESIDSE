@@ -5,9 +5,9 @@ def plot_2_merge():
     feature merging VS. non-feature merging
     """
     #= set experiment_id
-    # experiment_id = 'res18_1--resnet18--True--fix_tsize4x2'
+    experiment_id = 'res18_1--resnet18--True--fix_tsize4x2'
     # experiment_id = 'sesr_1--sesr--True--fix_tsize32x4'
-    experiment_id = 'srgan_1--srgan--True--fix_tsize32x4'
+    # experiment_id = 'srgan_1--srgan--True--fix_tsize32x4'
 
     # extract path
     other_experiment_id = experiment_id.replace("True", "False")
@@ -27,12 +27,12 @@ def plot_2_tsize():
     fixed tile size VS. free tile size
     """
     #= set experiment_id
-    # experiment_id = 'res18_1--resnet18--True--fix_tsize4x2'
+    experiment_id = 'res18_1--resnet18--True--fix_tsize4x2'
     # experiment_id = 'sesr_1--sesr--True--fix_tsize32x4'
-    experiment_id = 'srgan_1--srgan--True--fix_tsize32x4'
+    # experiment_id = 'srgan_1--srgan--True--fix_tsize32x4'
 
     # extract path
-    other_experiment_id = experiment_id.replace("--fix_tsize32x4", "")   #! 注意在这里改 nxn
+    other_experiment_id = experiment_id.replace("--fix_tsize4x2", "")   #! 注意在这里改 nxn
     pkl_path_1 = f'outputs/{experiment_id}/all_cmes.pickle'
     pkl_path_2 = f'outputs/{other_experiment_id}/all_cmes.pickle'
     save_path_ema = f'outputs/{experiment_id}/two_lines_tsize_ema.png'
@@ -47,5 +47,5 @@ def plot_2_tsize():
 
 
 if __name__ == '__main__':
-    # plot_2_tsize()
+    plot_2_tsize()
     plot_2_merge()
