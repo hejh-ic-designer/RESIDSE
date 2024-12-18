@@ -41,7 +41,7 @@
 
 ---
 
-64 :
+8 :
   op : conv
   in_resb : true
   dim : [270, 480, 64, 64, 3, 3]
@@ -111,7 +111,7 @@
   in_resb : false
   dim : [270, 480, 64, 0, 0, 0]
 
-19 :
+20 :
   op : conv
   in_resb : false
   dim : [270, 480, 48, 64, 3, 3]
