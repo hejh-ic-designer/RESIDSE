@@ -92,6 +92,6 @@ if __name__ == '__main__':
     # index = find_first_true_index(bool_list)
     # print(f"The index of the first True is: {index}")
 
-    lzc = find_lzc([0, 0, 0, 1])
+    lzc = find_lzc([0, 0, 0, 1, 1])
     print('lzc: ', lzc)
     

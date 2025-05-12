@@ -8,5 +8,6 @@ from .IterateStackStage import IterateStackStage
 from .ReduceStage import MinimalEDPStage, MinimalEnergyStage, MinimalLatencyStage, MinimalEMAStage
 from .IterateTileSizeStage import IterateTileSizeStage
 from .SumAllTileTypeStage import SumAllTileTypeStage
+from .IterateMemOrTileStage import IterateMemOrTileStage
 from .PlotStage import PlotStage
 

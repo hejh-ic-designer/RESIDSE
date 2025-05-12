@@ -31,6 +31,10 @@ class Stack:
         self.kernel_size = [layer['dim'][-1] for layer in self.stack_di.values()]
         self.ofm_h = [layer['dim'][0] for layer in self.stack_di.values()][-1]
         self.ofm_w = [layer['dim'][1] for layer in self.stack_di.values()][-1]
+        self.ofm_h_per_layer = [layer['dim'][0] for layer in self.stack_di.values()]
+        self.ofm_w_per_layer = [layer['dim'][1] for layer in self.stack_di.values()]
+        self.ifm_h_per_layer = [ofm_h * stride for ofm_h, stride in zip(self.ofm_h_per_layer, self.stride_per_layer)]
+        self.ifm_w_per_layer = [ofm_w * stride for ofm_w, stride in zip(self.ofm_w_per_layer, self.stride_per_layer)]
 
     def get_stack_weight_data_amount(self):
         # element or byte
@@ -75,16 +79,20 @@ if __name__ == '__main__':
     st8_di =  {17: {'op': 'conv', 'stride': 1, 'in_resb': True, 'dim': [7, 7, 512, 512, 3, 3]}, 18: {'op': 'conv', 'stride': 1, 'in_resb': True, 'dim': [7, 7, 512, 512, 3, 3]}, 19: {'op': 'pool', 'stride': 1, 'in_resb': False, 'dim': [1, 1, 512, 512, 7, 7]}}
     st9_di =  {20: {'op': 'fc', 'stride': 1, 'in_resb': False, 'dim': [1, 1, 1000, 512, 1, 1]}}
 
-    st0 = Stack(stack_di=st0_di)
-    st3 = Stack(stack_di=st3_di)
-    st8 = Stack(stack_di=st8_di)
-    st9 = Stack(stack_di=st9_di)
+    st0 = Stack(id=1,stack_di=st0_di)
+    st3 = Stack(id=1,stack_di=st3_di)
+    st8 = Stack(id=1,stack_di=st8_di)
+    st9 = Stack(id=1,stack_di=st9_di)
     print(st3.get_stack_weight_data_amount())
     print(st3.get_ema_of_all_fused())
     print(st3.ofm_area_per_layer)
     print(st3.ofm_data_amount_per_layer)
     print(st3.ifm_area_per_layer)
     print(st3.ifm_data_amount_per_layer)
+    print(st3.ifm_w_per_layer)
+    print(st3.ifm_h_per_layer)
+    print(st3.ofm_w_per_layer)
+    print(st3.ofm_h_per_layer)
     print(find_first_true_index(st3.in_resb))
 
 

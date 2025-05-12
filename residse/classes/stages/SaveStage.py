@@ -119,15 +119,19 @@ class PickleSaveStage(Stage):
     Class that dumps all received CMEs into a list and saves that list to a pickle file.
     """
 
-    def __init__(self, list_of_callables, *, dump_filename_pattern, **kwargs):
+    def __init__(self, list_of_callables, *, dump_filename_pattern, is_fixed_tsize, is_fixed_memsize, **kwargs):
         """
         :param list_of_callables: see Stage
-        :param pickle_filename: output pickle filename
+        :param dump_filename_pattern: output pickle filename pattern
+        :param is_fixed_tsize: whether tile size is fixed
+        :param is_fixed_memsize: whether memory size is fixed
         :param kwargs: any kwargs, passed on to substages and can be used in dump_filename_pattern
         """
         super().__init__(list_of_callables, **kwargs)
         self.dump_filename_pattern = dump_filename_pattern
         self.pickle_file_name = self.dump_filename_pattern.replace("?.json", "all_cmes.pickle")
+        self.is_fixed_tsize = is_fixed_tsize
+        self.is_fixed_memsize = is_fixed_memsize
 
     def run(self):
         """
@@ -135,15 +139,20 @@ class PickleSaveStage(Stage):
         This should be placed above a ReduceStage such as the SumStage, as we assume the list of CMEs is passed as extra_info
         """
         self.kwargs["dump_filename_pattern"] = self.dump_filename_pattern
+        self.kwargs["is_fixed_tsize"] = self.is_fixed_tsize
+        self.kwargs["is_fixed_memsize"] = self.is_fixed_memsize
+
         substage = self.list_of_callables[0](self.list_of_callables[1:], **self.kwargs)
         all_cmes = []
         for cme, extra_info in substage.run():
             all_cmes.append(cme)
             yield cme, extra_info
-
-        os.makedirs(os.path.dirname(self.pickle_file_name), exist_ok=True)
-        with open(self.pickle_file_name, "wb") as handle:
-            pickle.dump(all_cmes, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        logger.info(
-            f"Saved pickled list of {len(all_cmes)} CMEs to {self.pickle_file_name}."
-        )
+        
+        #固定tile_size，迭代mem_size时，保存pickle文件用于绘制曲线图
+        if self.is_fixed_tsize and not self.is_fixed_memsize:
+            os.makedirs(os.path.dirname(self.pickle_file_name), exist_ok=True)
+            with open(self.pickle_file_name, "wb") as handle:
+                pickle.dump(all_cmes, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            logger.info(
+                f"Saved pickled list of {len(all_cmes)} CMEs to {self.pickle_file_name}."
+            )

@@ -17,6 +17,7 @@ class ResidseCostModelStage(Stage):
         tile_size,
         tile_type,
         is_feature_merging,
+        is_rda,
         **kwargs
     ):
         super().__init__(list_of_callables, **kwargs)
@@ -27,7 +28,8 @@ class ResidseCostModelStage(Stage):
             self.tile_size,
             self.tile_type,
             self.is_feature_merging,
-        ) = (dla, a_buf_size, stack, tile_size, tile_type, is_feature_merging)
+            self.is_rda,
+        ) = (dla, a_buf_size, stack, tile_size, tile_type, is_feature_merging, is_rda)
 
     def run(self):
         self.cme = CostModelEvaluation(
@@ -37,6 +39,7 @@ class ResidseCostModelStage(Stage):
             tile_size=self.tile_size,
             tile_type=self.tile_type,
             is_feature_merging=self.is_feature_merging,
+            is_rda=self.is_rda,
         )
         yield self.cme
 

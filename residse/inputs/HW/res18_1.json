@@ -1,12 +1,12 @@
 {
     "mac_unroll": {
-        "oc": 32,
-        "w": 4,
-        "h": 4
+        "oc": 128,
+        "w": 2,
+        "h": 2
     },
     "a_buf": {
-        "lower_limit": 5,
-        "size_step": 0.5,
+        "lower_limit": 6,
+        "size_step": 0.3,
         "size_points": 100
     },
     "w_buf": {

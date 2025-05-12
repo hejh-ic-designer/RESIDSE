@@ -1,3 +1,4 @@
+import sys
 from typing import Generator, Callable, List, Tuple, Any
 from residse.classes.workload.stack import Stack
 from itertools import product
@@ -6,26 +7,39 @@ logger = logging.getLogger(__name__)
 
 class TileSizeGenerator:
 
-    def __init__(self, fixed_tile_size: Tuple[int] | None, stack: Stack, nb_of_points: Tuple[int]):
+    # def __init__(self, fixed_tile_size: Tuple[int] | None, stack: Stack, nb_of_points: Tuple[int]):
+    def __init__(self, fixed_tile_size: Tuple[int] | None, stacks: List[Stack]):
         self.fixed_tile_size = fixed_tile_size
-        self.ofm_h = stack.ofm_h
-        self.ofm_w = stack.ofm_w
-        self.h_points = nb_of_points[0] if nb_of_points is not None else 10  #* default tile size profiling points
-        self.w_points = nb_of_points[1] if nb_of_points is not None else 10  #* default tile size profiling points
+        self.ofm_h_list = []
+        self.ofm_w_list = []
+        for stack in stacks:
+            self.ofm_h_list.append(stack.ofm_h)
+            self.ofm_w_list.append(stack.ofm_w)
+
+        # self.h_points = nb_of_points[0] if nb_of_points is not None else 10  #* default tile size profiling points
+        # self.w_points = nb_of_points[1] if nb_of_points is not None else 10  #* default tile size profiling points
 
 
     def run(self):
+        for ofm_h,ofm_w in zip(self.ofm_h_list,self.ofm_w_list):
+            if not (ofm_h == 540 and ofm_w == 960):
+                sys.exit("error: Tile_size迭代实验必须在960*540分辨率下的图像增强网络上进行")
         if self.fixed_tile_size is not None:
-            size_gen_lst = [self.fixed_tile_size]
-        else:
-            t_h_lst = self.generate_even_sequence(self.ofm_h)       # 偶数序列，产生的点会很多
-            t_w_lst = self.generate_even_sequence(self.ofm_w)       # 偶数序列，产生的点会很多
-            # t_h_lst = self.generate_halves(self.ofm_h, self.h_points)   #todo 采用了比较简单的除以2算法
-            # t_w_lst = self.generate_halves(self.ofm_w, self.w_points)   #todo 采用了比较简单的除以2算法
-            t_h_lst = list(filter(lambda x: x != 0, t_h_lst))   # remove 0
-            t_w_lst = list(filter(lambda x: x != 0, t_w_lst))   # remove 0
-            logger.debug(f'tile size profiling list: h in {t_h_lst}, w in {t_w_lst}')
-            size_gen_lst = list(product(t_h_lst, t_w_lst))
+                sys.exit("error: Tile_size迭代实验不可指定fixed tile size")
+
+        # if self.fixed_tile_size is not None:
+        #     size_gen_lst = [self.fixed_tile_size]
+        # else:
+        # t_h_lst = self.generate_even_sequence(self.ofm_h)       # 偶数序列，产生的点会很多
+        # t_w_lst = self.generate_even_sequence(self.ofm_w)       # 偶数序列，产生的点会很多
+        # # t_h_lst = self.generate_halves(self.ofm_h, self.h_points)   #todo 采用了比较简单的除以2算法
+        # # t_w_lst = self.generate_halves(self.ofm_w, self.w_points)   #todo 采用了比较简单的除以2算法
+        # t_h_lst = list(filter(lambda x: x != 0, t_h_lst))   # remove 0
+        # t_w_lst = list(filter(lambda x: x != 0, t_w_lst))   # remove 0
+        t_h_lst = [540, 270, 72, 16, 4, 1]
+        t_w_lst = [960, 240, 60, 16, 4, 1]
+        logger.debug(f'tile size profiling list: h in {t_h_lst}, w in {t_w_lst}')
+        size_gen_lst = list(product(t_h_lst, t_w_lst))
         self.size_gen_lst = size_gen_lst
         
         for tile_size in self.size_gen_lst:
@@ -53,11 +67,11 @@ class TileTypeGenerator:
         self.tile_size = tile_size
         
     def run(self):
-        if self.tile_size == (self.ofm_h, self.ofm_w):
+        if (self.tile_size[0] >= self.ofm_h) and (self.tile_size[1] >= self.ofm_w):
             return ['F']
-        elif (self.tile_size[0] == self.ofm_h):
+        elif (self.tile_size[0] >= self.ofm_h):
             return ['HL', 'HM', 'HR']
-        elif (self.tile_size[1] == self.ofm_w):
+        elif (self.tile_size[1] >= self.ofm_w):
             return ['WU', 'WM', 'WD']
         else:
             return ['LU', 'U', 'RU', 'L', 'M', 'R', 'LD', 'D', 'RD']
@@ -68,9 +82,9 @@ class TileTypeGenerator:
 
 
 if __name__ == '__main__':
-    st3_di =  { 7: {'op': 'conv', 'stride': 2, 'in_resb': True, 'dim': [28, 28, 128, 64, 3, 3]}, 
-                8: {'op': 'conv', 'stride': 1, 'in_resb': True, 'dim': [270, 480, 128, 128, 3, 3]}}
-    eg = TileSizeGenerator(fixed_tile_size=None, stack=Stack(1, st3_di), nb_of_points=[10, 10])
+    st3_di =  { 7: {'op': 'conv', 'stride': 2, 'in_resb': True, 'dim': [540, 960, 128, 64, 3, 3]}, 
+                8: {'op': 'conv', 'stride': 1, 'in_resb': True, 'dim': [540, 960, 128, 128, 3, 3]}}
+    eg = TileSizeGenerator(fixed_tile_size=None, stack=Stack(1, st3_di))
     poss = eg.run()
     print(list(poss))
     

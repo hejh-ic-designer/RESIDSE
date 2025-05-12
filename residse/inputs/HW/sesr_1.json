@@ -1,8 +1,8 @@
 {
     "mac_unroll": {
-        "oc": 4,
+        "oc": 32,
         "w": 4,
-        "h": 32
+        "h": 4
     },
     "a_buf": {
         "lower_limit": 10,

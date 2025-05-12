@@ -59,4 +59,53 @@
 1. 硬件定义文件中的buffer容量单位均为 KB
 2. dram bandwidth 单位是 Byte/cycle
 
+# cal version
 
+## srgan 
+
+1. `python main_dse.py --nn srgan --hw srgan_1 --merge --rda --tile_size 32 32`
+2. `python main_dse.py --nn srgan --hw srgan_1 --rda --tile_size 32 32`
+3. `python main_dse.py --nn srgan --hw srgan_1 --tile_size 32 32`
+4. `python plot_compare_lines.py --id srgan_1--srgan --tsize 32 32`
+
+5. `python main_dse.py --nn srgan --hw srgan_1 --merge --rda --tile_size 16 16`
+6. `python main_dse.py --nn srgan --hw srgan_1 --rda --tile_size 16 16`
+7. `python main_dse.py --nn srgan --hw srgan_1 --tile_size 16 16`
+8. `python plot_compare_lines.py --id srgan_1--srgan --tsize 16 16`
+
+9. `python main_dse.py --nn srgan --hw srgan_1 --merge --rda --tile_size 8 8`
+10. `python main_dse.py --nn srgan --hw srgan_1 --rda --tile_size 8 8`
+11. `python main_dse.py --nn srgan --hw srgan_1 --tile_size 8 8`
+12. `python plot_compare_lines.py --id srgan_1--srgan --tsize 8 8`
+
+13. `python main_dse.py --nn srgan --hw srgan_1 --merge --rda --tile_size 4 4`
+14. `python main_dse.py --nn srgan --hw srgan_1 --rda --tile_size 4 4`
+15. `python main_dse.py --nn srgan --hw srgan_1 --tile_size 4 4`
+16. `python plot_compare_lines.py --id srgan_1--srgan --tsize 4 4`
+
+17. `python main_dse.py --nn srgan --hw srgan_1 --merge --rda --tile_size 1 480`
+18. `python main_dse.py --nn srgan --hw srgan_1 --rda --tile_size 1 480`
+19. `python main_dse.py --nn srgan --hw srgan_1 --tile_size 1 480`
+20. `python plot_compare_lines.py --id srgan_1--srgan --tsize 1 480`
+
+## resnet18 
+
+21. `python main_dse.py --nn resnet18 --hw res18_1 --merge --rda --tile_size 4 4`
+22. `python main_dse.py --nn resnet18 --hw res18_1 --rda --tile_size 4 4`
+23. `python main_dse.py --nn resnet18 --hw res18_1 --tile_size 4 4`
+24. `python plot_compare_lines.py --id res18_1--resnet18 --tsize 4 4`
+
+25. `python main_dse.py --nn resnet18 --hw res18_1 --merge --rda --tile_size 1 112`
+26. `python main_dse.py --nn resnet18 --hw res18_1 --rda --tile_size 1 112`
+27. `python main_dse.py --nn resnet18 --hw res18_1 --tile_size 1 112`
+28. `python plot_compare_lines.py --id res18_1--resnet18 --tsize 1 112`
+
+29. `python main_dse.py --nn resnet18 --hw res18_1 --merge --rda --tile_size 3 3`
+30. `python main_dse.py --nn resnet18 --hw res18_1 --rda --tile_size 3 3`
+31. `python main_dse.py --nn resnet18 --hw res18_1 --tile_size 3 3`
+32. `python plot_compare_lines.py --id res18_1--resnet18 --tsize 3 3`
+
+33. `python main_dse.py --nn resnet18 --hw res18_1 --merge --rda --tile_size 2 2`
+34. `python main_dse.py --nn resnet18 --hw res18_1 --rda --tile_size 2 2`
+35. `python main_dse.py --nn resnet18 --hw res18_1 --tile_size 2 2`
+36. `python plot_compare_lines.py --id res18_1--resnet18 --tsize 2 2`
